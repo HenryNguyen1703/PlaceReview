@@ -13,6 +13,7 @@ import vn.ngochieu.com.repository.UserRepository;
 import vn.ngochieu.com.service.LocationService;
 import vn.ngochieu.com.util.SecurityUtils;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -44,5 +45,11 @@ public class LocationServiceImpl implements LocationService {
 
         locationRepository.save(newLocation);
         return ResponseEntity.ok(createLocationRequest);
+    }
+
+    @Override
+    public ResponseEntity<?> listLocations() {
+        List<Locations> locations = locationRepository.findAll();
+        return ResponseEntity.ok(locations);
     }
 }

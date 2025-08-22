@@ -1,5 +1,6 @@
 package vn.ngochieu.com.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -21,7 +22,14 @@ public class LocationController {
     private final LocationService locationService;
 
     @PostMapping
+    @Operation(summary = "Create a new location", description = "API for role BUSINESS to create a new location")
     public ResponseEntity<?> createLocation(@RequestBody @Valid CreateLocationRequest createLocationRequest, HttpServletRequest requestHttp) {
          return locationService.createLocation(createLocationRequest, requestHttp);
+    }
+
+    @GetMapping
+    @Operation(summary = "List of locations", description = "API for GUESS and CUSTOMER to see list of locations")
+    public ResponseEntity<?> listLocations() {
+        return locationService.listLocations();
     }
 }
