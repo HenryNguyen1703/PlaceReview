@@ -7,10 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import vn.ngochieu.com.payload.request.UserLogInRequest;
 import vn.ngochieu.com.payload.request.UserSignUpRequest;
 import vn.ngochieu.com.service.UserService;
@@ -20,6 +17,7 @@ import vn.ngochieu.com.service.UserService;
 @RequiredArgsConstructor
 @Validated
 @Tag(name = "Authentication APIs", description = "APIs for signup and login")
+@CrossOrigin(origins = "*")
 public class AuthController {
 
     private final UserService userService;
