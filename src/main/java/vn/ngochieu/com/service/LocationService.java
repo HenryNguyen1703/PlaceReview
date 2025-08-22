@@ -1,4 +1,7 @@
 package vn.ngochieu.com.service;
 
-public class LocationService {
+import org.springframework.http.ResponseEntity;
+
+public interface LocationService {
+    ResponseEntity<?> createLocation();
 }
