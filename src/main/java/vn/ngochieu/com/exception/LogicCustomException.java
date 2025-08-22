@@ -1,4 +1,9 @@
 package vn.ngochieu.com.exception;
 
-public class LogicCustomExeption {
+import lombok.Data;
+
+@Data
+public class LogicCustomException extends RuntimeException {
+    private String message;
+    private Integer code;
 }
