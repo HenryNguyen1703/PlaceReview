@@ -87,6 +87,6 @@ public class UserServiceImpl implements UserService {
         Users.Role role = user.getRole();
         SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(role.name());
         grantedAuthorities.add(simpleGrantedAuthority);
-        return new User(user.getUsername(), user.getPassword(), grantedAuthorities);
+        return new User(user.getEmail(), user.getPassword(), grantedAuthorities);
     }
 }
