@@ -34,7 +34,12 @@ public class Reviews {
     @JoinColumn(name = "LOCATION_ID")
     Locations location;
 
-    enum Status{
+    public enum Status{
         PENDING, APPROVED, REJECTED
+    }
+
+    @PrePersist
+    public void PrePersist(){
+        this.status = Status.PENDING;
     }
 }
