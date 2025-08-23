@@ -1,4 +1,4 @@
-package vn.ngochieu.com.payload.request;
+package vn.ngochieu.com.user_management.payload.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

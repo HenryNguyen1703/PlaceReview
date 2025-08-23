@@ -1,4 +1,4 @@
-package vn.ngochieu.com.payload.response;
+package vn.ngochieu.com.user_management.payload.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
