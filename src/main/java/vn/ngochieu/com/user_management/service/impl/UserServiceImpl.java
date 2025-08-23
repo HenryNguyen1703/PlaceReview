@@ -64,10 +64,16 @@ public class UserServiceImpl implements UserService {
     public UserLogInResponse login(UserLogInRequest userLogInRequest, HttpServletRequest request) {
         Optional<Users> checker = userRepository.findByEmail(userLogInRequest.getEmail());
         if(checker.isEmpty()) {
-            return ResponseEntity.status(401).build();
+            LogicCustomException logicCustomException = new LogicCustomException();
+            logicCustomException.setMessage("Username or password is incorrect");
+            logicCustomException.setCode(401);
+            throw logicCustomException;
         }
         if(!passwordEncoder.matches(userLogInRequest.getPassword(), checker.get().getPassword())) {
-            return ResponseEntity.status(401).build();
+            LogicCustomException logicCustomException = new LogicCustomException();
+            logicCustomException.setMessage("Username or password is incorrect");
+            logicCustomException.setCode(401);
+            throw logicCustomException;
         }
 
         // Generate token
