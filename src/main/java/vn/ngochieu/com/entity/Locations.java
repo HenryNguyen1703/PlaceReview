@@ -1,39 +1,38 @@
 package vn.ngochieu.com.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Table(name = "LOCATIONS")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Locations {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    Long id;
 
     @Column(name = "NAME", unique = true, nullable = false)
-    private String name;
+    String name;
 
     @Column(name = "ADDRESS", unique = true, nullable = false)
-    private String address;
+    String address;
 
     @Column(name = "PHONE", nullable = false)
-    private String phone;
+    String phone;
 
     @Column(name = "DESCRIPTION")
-    private String description;
+    String description;
 
     @Column(name = "TYPE")
-    private String type;
+    String type;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
-    private Users user;
+    Users user;
 
 }

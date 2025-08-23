@@ -4,7 +4,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +18,11 @@ import vn.ngochieu.com.service.LocationService;
 @RequiredArgsConstructor
 @Validated
 @Tag(name = "Location APIs", description = "APIs for location")
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @CrossOrigin(origins = "*")
 public class LocationController {
 
-    private final LocationService locationService;
+    LocationService locationService;
 
     @PostMapping
     @Operation(summary = "Create a new location", description = "API for role BUSINESS to create a new location")
@@ -31,5 +34,11 @@ public class LocationController {
     @Operation(summary = "List of locations", description = "API for GUESS and CUSTOMER to see list of locations")
     public ResponseEntity<?> listLocations() {
         return locationService.listLocations();
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Location detail", description = "API for GUESS and CUSTOMER to see location detail by id")
+    public ResponseEntity<?> detailLocation(@PathVariable Long id) {
+        return locationService.detailLocation(id);
     }
 }

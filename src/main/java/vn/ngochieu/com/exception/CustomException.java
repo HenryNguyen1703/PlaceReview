@@ -1,13 +1,19 @@
 package vn.ngochieu.com.exception;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 import java.util.Date;
 
-@Data
+@Getter
+@Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CustomException {
-    private Date timestamp;
-    private Integer status;
-    private String message;
-    private String path;
+    Date timestamp;
+    Integer status;
+    String message;
+    String path;
 }

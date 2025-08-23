@@ -2,23 +2,26 @@ package vn.ngochieu.com.payload.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.antlr.v4.runtime.misc.NotNull;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CreateLocationRequest {
 
     @NotBlank(message = "Name location is required")
-    private String name;
+    String name;
 
     @NotBlank(message = "Address is required")
-    private String address;
+    String address;
 
     @NotBlank(message = "Phone is required")
-    private String phone;
+    String phone;
 
-    private String description;
+    String description;
 
-    private String type;
+    String type;
 }

@@ -1,10 +1,13 @@
 package vn.ngochieu.com.service.impl;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import vn.ngochieu.com.entity.Locations;
 import vn.ngochieu.com.entity.Users;
 import vn.ngochieu.com.payload.request.CreateLocationRequest;
@@ -18,11 +21,12 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class LocationServiceImpl implements LocationService {
 
-    private final LocationRepository locationRepository;
+    LocationRepository locationRepository;
 
-    private final UserRepository userRepository;
+    UserRepository userRepository;
 
     @Override
     public ResponseEntity<?> createLocation(CreateLocationRequest createLocationRequest, HttpServletRequest requestHttp) {
@@ -50,6 +54,13 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public ResponseEntity<?> listLocations() {
         List<Locations> locations = locationRepository.findAll();
+        return ResponseEntity.ok(locations);
+    }
+
+    @Override
+    public ResponseEntity<?> detailLocation(Long locationId) {
+        Locations locations = locationRepository.findById(locationId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return ResponseEntity.ok(locations);
     }
 }
