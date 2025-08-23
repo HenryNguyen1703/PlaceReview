@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import vn.ngochieu.com.service.impl.UserServiceImpl;
+import vn.ngochieu.com.user_management.service.impl.UserServiceImpl;
 import vn.ngochieu.com.util.JwtUtils;
 
 import java.io.IOException;
