@@ -1,13 +1,14 @@
 package vn.ngochieu.com.payload.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserLogInRequest {
-    private String email;
-    private String password;
+    String email;
+    String password;
 }

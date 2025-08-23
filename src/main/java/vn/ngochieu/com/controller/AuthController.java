@@ -4,7 +4,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +19,11 @@ import vn.ngochieu.com.service.UserService;
 @RequiredArgsConstructor
 @Validated
 @Tag(name = "Authentication APIs", description = "APIs for signup and login")
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @CrossOrigin(origins = "*")
 public class AuthController {
 
-    private final UserService userService;
+    UserService userService;
 
     @PostMapping("/signup")
     @Operation(summary = "Sign up", description = "API for registered users")

@@ -1,41 +1,40 @@
 package vn.ngochieu.com.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Entity
-@Data
-@ToString
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "REVIEWS")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Reviews {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    Long id;
 
     @Column(name = "RATING")
-    public Integer rating;
+    Integer rating;
 
     @Column(name = "COMMENT")
-    public String comment;
+    String comment;
 
     @Column(name = "STATUS")
     @Enumerated(EnumType.STRING)
-    public Status status;
+    Status status;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
-    private Users user;
+    Users user;
 
     @ManyToOne
     @JoinColumn(name = "LOCATION_ID")
-    private Locations location;
+    Locations location;
 
-    public enum Status{
+    enum Status{
         PENDING, APPROVED, REJECTED
     }
 }
