@@ -1,16 +1,16 @@
 package vn.ngochieu.com.service;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.ResponseEntity;
 import vn.ngochieu.com.entity.Locations;
 import vn.ngochieu.com.payload.request.CreateLocationRequest;
+import vn.ngochieu.com.payload.response.LocationResponse;
 
 import java.util.List;
 
 public interface LocationService {
-    Locations createLocation(CreateLocationRequest createLocationRequest, HttpServletRequest requestHttp);
+    LocationResponse createLocation(CreateLocationRequest createLocationRequest, HttpServletRequest requestHttp);
 
-    List<Locations> listLocations();
+    List<LocationResponse> listLocations();
 
-    Locations detailLocation(Long locationId);
+    LocationResponse detailLocation(Long locationId);
 }
