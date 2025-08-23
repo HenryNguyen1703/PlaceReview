@@ -12,6 +12,7 @@ import vn.ngochieu.com.entity.Users;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CreateReviewResponse {
+    Long id;
     Integer rating;
     String comment;
     Reviews.Status status;
