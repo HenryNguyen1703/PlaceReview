@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder;
 
     @Override
-    public ResponseEntity<?> signup(UserSignUpRequest userSignUpRequest, HttpServletRequest request) {
+    public UserLogInResponse signup(UserSignUpRequest userSignUpRequest, HttpServletRequest request) {
         Optional<Users> checker = userRepository.findByEmail(userSignUpRequest.getEmail());
         if (checker.isPresent()) {
             LogicCustomException logicCustomException = new LogicCustomException();
@@ -57,11 +57,11 @@ public class UserServiceImpl implements UserService {
         userLogInResponse.setUsername(savedUser.getUsername());
         userLogInResponse.setEmail(savedUser.getEmail());
         userLogInResponse.setToken(JwtUtils.createToken(savedUser, request));
-        return ResponseEntity.ok(userLogInResponse);
+        return userLogInResponse;
     }
 
     @Override
-    public ResponseEntity<?> login(UserLogInRequest userLogInRequest, HttpServletRequest request) {
+    public UserLogInResponse login(UserLogInRequest userLogInRequest, HttpServletRequest request) {
         Optional<Users> checker = userRepository.findByEmail(userLogInRequest.getEmail());
         if(checker.isEmpty()) {
             return ResponseEntity.status(401).build();
@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
         userLogInResponse.setUsername(checker.get().getUsername());
         userLogInResponse.setEmail(checker.get().getEmail());
         userLogInResponse.setToken(JwtUtils.createToken(checker.get(), request));
-        return ResponseEntity.ok(userLogInResponse);
+        return userLogInResponse;
     }
 
     @Override
