@@ -13,6 +13,7 @@ import vn.ngochieu.com.entity.Users;
 import vn.ngochieu.com.exception.LogicCustomException;
 import vn.ngochieu.com.mapper.LocationMapper;
 import vn.ngochieu.com.payload.request.CreateLocationRequest;
+import vn.ngochieu.com.payload.response.LocationResponse;
 import vn.ngochieu.com.repository.LocationRepository;
 import vn.ngochieu.com.user_management.repository.UserRepository;
 import vn.ngochieu.com.service.LocationService;
@@ -33,7 +34,7 @@ public class LocationServiceImpl implements LocationService {
     LocationMapper locationMapper;
 
     @Override
-    public Locations createLocation(CreateLocationRequest createLocationRequest, HttpServletRequest requestHttp) {
+    public LocationResponse createLocation(CreateLocationRequest createLocationRequest, HttpServletRequest requestHttp) {
 
         // Find user by jwt
         Optional<Users> checker = userRepository.findByEmail(SecurityUtils.getCurrentUser(requestHttp));
@@ -48,20 +49,20 @@ public class LocationServiceImpl implements LocationService {
         Locations newLocation = locationMapper.toEntity(createLocationRequest);
         newLocation.setUser(checker.get());
 
-        locationRepository.save(newLocation);
-        return newLocation;
+        Locations saveLocation = locationRepository.save(newLocation);
+        return locationMapper.toDto(saveLocation);
     }
 
     @Override
-    public List<Locations> listLocations() {
+    public List<LocationResponse> listLocations() {
         List<Locations> locations = locationRepository.findAll();
-        return locations;
+        return locationMapper.toDtoList(locations);
     }
 
     @Override
-    public Locations detailLocation(Long locationId) {
+    public LocationResponse detailLocation(Long locationId) {
         Locations location = locationRepository.findById(locationId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return location;
+        return locationMapper.toDto(location);
     }
 }
