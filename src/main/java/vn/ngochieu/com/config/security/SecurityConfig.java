@@ -28,7 +28,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter) throws Exception {
         http
-                .authorizeHttpRequests(authz -> authz
+                .authorizeHttpRequests(authz -> (authz
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
@@ -37,6 +37,7 @@ public class SecurityConfig {
                         ).permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/locations/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/reviews/average/{locationId}")).permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/reviews/{locationId}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/reviews/**").hasAuthority("CUSTOMER")
                         .requestMatchers(HttpMethod.POST, "/api/locations/**").hasAuthority("BUSINESS")

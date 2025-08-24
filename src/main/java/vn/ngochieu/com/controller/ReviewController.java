@@ -75,4 +75,15 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @GetMapping("/average/{locationId}")
+    @Operation(summary = "Calculate average review ratings by location id", description = "API for all users to average review ratings by location id")
+    public ResponseEntity<?> averageReviewRatingsByLocationId(@PathVariable Long locationId) {
+        ApiResponse<Double> response = ApiResponse.<Double>builder()
+                .data(reviewService.averageRatingByLocationId(locationId))
+                .message("average review ratings successful")
+                .status(HttpStatus.OK.value())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
 }
