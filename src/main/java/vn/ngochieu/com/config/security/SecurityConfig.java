@@ -39,7 +39,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/locations/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/reviews/**").hasAuthority("CUSTOMER")
                         .requestMatchers(HttpMethod.POST, "/api/locations/**").hasAuthority("BUSINESS")
-                        .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/locations/").hasAuthority("ADMIN")
+                        .requestMatchers("/api/reviews/{id}").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable);

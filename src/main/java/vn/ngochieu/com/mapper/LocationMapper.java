@@ -13,14 +13,18 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface LocationMapper {
 
+    // Map CreateLocationRequest -> Locations
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
     Locations toEntity(CreateLocationRequest createLocationRequest);
 
+    // Map Locations -> LocationResponse
     @Mapping(source = "user", target = "user")
     LocationResponse toDto(Locations location);
 
+    // Map List<Locations> -> List<LocationResponse>
     List<LocationResponse> toDtoList(List<Locations> locations);
 
+    // Map Users -> UserResponse
     UserResponse toUserResponse(Users user);
 }

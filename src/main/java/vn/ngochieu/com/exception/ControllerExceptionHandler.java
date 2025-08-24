@@ -3,6 +3,7 @@ package vn.ngochieu.com.exception;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,6 +37,16 @@ public class ControllerExceptionHandler {
         CustomException appException = new CustomException();
         appException.setMessage(e.getMessage());
         appException.setStatus(e.getCode());
+        appException.setTimestamp(new Date());
+        appException.setPath(request.getRequestURI());
+        return ResponseEntity.status(400).body(appException);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<CustomException> handleJsonParseError(HttpMessageNotReadableException e, HttpServletRequest request) {
+        CustomException appException = new CustomException();
+        appException.setMessage(e.getMessage());
+        appException.setStatus(400);
         appException.setTimestamp(new Date());
         appException.setPath(request.getRequestURI());
         return ResponseEntity.status(400).body(appException);
