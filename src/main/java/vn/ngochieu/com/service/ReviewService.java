@@ -18,4 +18,6 @@ public interface ReviewService {
 
     List<CreateReviewResponse> listLocationApprovedByLocationId(Long locationId);
 
+    Double averageRatingByLocationId(Long locationId);
+
 }

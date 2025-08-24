@@ -169,4 +169,19 @@ public class ReviewServiceImpl implements ReviewService {
         // Map to DTO
         return reviewMapper.toCreateReviewResponse(approvedReviews);
     }
+
+    @Override
+    public Double averageRatingByLocationId(Long locationId) {
+        List<Reviews> reviews = reviewRepository.findAllReviewsByLocationId(locationId);
+        Double totalStar= 0.0;
+        long totalRating = 0L;
+        for(Reviews review : reviews){
+            if(review.getStatus() == Reviews.Status.APPROVED){
+                totalStar += review.getRating();
+                totalRating += 1;
+            }
+        }
+        Double averageRating = totalStar / totalRating;
+        return averageRating;
+    }
 }
