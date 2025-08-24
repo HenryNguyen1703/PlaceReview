@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import vn.ngochieu.com.payload.request.CreateReviewRequest;
 import vn.ngochieu.com.payload.request.UpdateReviewRequest;
 import vn.ngochieu.com.payload.response.CreateReviewResponse;
+import vn.ngochieu.com.payload.response.LocationResponse;
 
 import java.util.List;
 
@@ -13,5 +14,8 @@ public interface ReviewService {
 
     List<CreateReviewResponse> listReview();
 
-    Void reviewModeration(Long id, UpdateReviewRequest updateReviewRequest, HttpServletRequest requestHttp);
+    void reviewModeration(Long id, UpdateReviewRequest updateReviewRequest, HttpServletRequest requestHttp);
+
+    List<CreateReviewResponse> listLocationApprovedByLocationId(Long locationId);
+
 }

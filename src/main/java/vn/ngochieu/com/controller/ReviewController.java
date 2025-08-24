@@ -64,4 +64,15 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @GetMapping("/{locationId}")
+    @Operation(summary = "List approved reviews by location id", description = "API for all users to see approved reviews")
+    public ResponseEntity<?> listApprovedReviewsByLocationId(@PathVariable Long locationId) {
+        ApiResponse<List<CreateReviewResponse>> response = ApiResponse.<List<CreateReviewResponse>>builder()
+                .data(reviewService.listLocationApprovedByLocationId(locationId))
+                .message("List approved reviews successful")
+                .status(HttpStatus.OK.value())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
 }
