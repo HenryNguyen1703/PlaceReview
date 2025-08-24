@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.sql.Update;
 import org.springframework.stereotype.Service;
 import vn.ngochieu.com.entity.Locations;
 import vn.ngochieu.com.entity.Reviews;
@@ -14,12 +13,14 @@ import vn.ngochieu.com.mapper.ReviewMapper;
 import vn.ngochieu.com.payload.request.CreateReviewRequest;
 import vn.ngochieu.com.payload.request.UpdateReviewRequest;
 import vn.ngochieu.com.payload.response.CreateReviewResponse;
+import vn.ngochieu.com.payload.response.LocationResponse;
 import vn.ngochieu.com.repository.LocationRepository;
 import vn.ngochieu.com.repository.ReviewRepository;
 import vn.ngochieu.com.service.ReviewService;
 import vn.ngochieu.com.user_management.repository.UserRepository;
 import vn.ngochieu.com.util.SecurityUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,7 +51,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         // Check user is CUSTOMER
         Users user = checker.get();
-        if(user.getRole() == Users.Role.CUSTOMER){
+        if(user.getRole() != Users.Role.CUSTOMER){
             LogicCustomException logicCustomException = new LogicCustomException();
             logicCustomException.setMessage("User is not a customer");
             logicCustomException.setCode(403);
@@ -59,7 +60,13 @@ public class ReviewServiceImpl implements ReviewService {
 
         // Check location id is valid
         Locations location = locationRepository.findById(createReviewRequest.getLocationId())
-                .orElseThrow(() -> new RuntimeException("Location not found"));
+                .orElse(null);
+        if(location == null){
+            LogicCustomException logicCustomException = new LogicCustomException();
+            logicCustomException.setMessage("Location is not found");
+            logicCustomException.setCode(400);
+            throw logicCustomException;
+        }
 
         Reviews reviews = reviewMapper.toEntity(createReviewRequest);
         reviews.setUser(user);
@@ -76,7 +83,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Void reviewModeration(Long id, UpdateReviewRequest updateReviewRequest, HttpServletRequest requestHttp) {
+    public void reviewModeration(Long id, UpdateReviewRequest updateReviewRequest, HttpServletRequest requestHttp) {
 
         //Check Token
         Optional<Users> checker = userRepository.findByEmail(SecurityUtils.getCurrentUser(requestHttp));
@@ -99,7 +106,13 @@ public class ReviewServiceImpl implements ReviewService {
 
         // Check review id
         Reviews reviews = reviewRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Review not found"));
+                .orElseThrow(null);
+        if(reviews == null){
+            LogicCustomException logicCustomException = new LogicCustomException();
+            logicCustomException.setMessage("Review is not found");
+            logicCustomException.setCode(404);
+            throw logicCustomException;
+        }
 
         // Check status request is PENDING
         if(updateReviewRequest.getStatus() == Reviews.Status.PENDING){
@@ -133,6 +146,27 @@ public class ReviewServiceImpl implements ReviewService {
         }
 
         reviewRepository.save(reviews);
-        return null;
+    }
+
+    @Override
+    public List<CreateReviewResponse> listLocationApprovedByLocationId(Long locationId) {
+        Locations location = locationRepository.findById(locationId)
+                .orElse(null);
+        if(location == null){
+            LogicCustomException logicCustomException = new LogicCustomException();
+            logicCustomException.setMessage("location not found");
+            logicCustomException.setCode(400);
+            throw logicCustomException;
+        }
+        List<Reviews> listReviews = reviewRepository.findAllReviewsByLocationId(locationId);
+        List<Reviews> approvedReviews = new ArrayList<>();
+        for(Reviews review : listReviews){
+            if(review.getStatus() == Reviews.Status.APPROVED){
+                approvedReviews.add(review);
+            }
+        }
+
+        // Map to DTO
+        return reviewMapper.toCreateReviewResponse(approvedReviews);
     }
 }

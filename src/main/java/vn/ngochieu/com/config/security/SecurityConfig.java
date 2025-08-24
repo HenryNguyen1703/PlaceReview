@@ -37,6 +37,7 @@ public class SecurityConfig {
                         ).permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/locations/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/reviews/{locationId}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/reviews/**").hasAuthority("CUSTOMER")
                         .requestMatchers(HttpMethod.POST, "/api/locations/**").hasAuthority("BUSINESS")
                         .requestMatchers(HttpMethod.GET, "/api/locations/").hasAuthority("ADMIN")
