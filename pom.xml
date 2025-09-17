@@ -98,6 +98,21 @@
             <artifactId>mapstruct</artifactId>
             <version>1.5.5.Final</version>
         </dependency>
+        <!-- Spring mail -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <!-- Thymeleaf -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <!-- Redis -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

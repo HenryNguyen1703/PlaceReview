@@ -2,7 +2,9 @@ package vn.ngochieu.com.user_management.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,8 @@ import vn.ngochieu.com.user_management.payload.request.UserSignUpRequest;
 import vn.ngochieu.com.user_management.payload.response.UserLogInResponse;
 import vn.ngochieu.com.user_management.service.UserService;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -30,13 +34,13 @@ public class AuthController {
 
     @PostMapping("/signup")
     @Operation(summary = "Sign up", description = "API for registered users")
-    public ResponseEntity<?> signup(@RequestBody @Valid UserSignUpRequest userSignUpRequest, HttpServletRequest request) {
-        ApiResponse<UserLogInResponse> response = ApiResponse.<UserLogInResponse>builder()
-                .data(userService.signup(userSignUpRequest, request))
+    public ResponseEntity<?> signup(@RequestBody @Valid UserSignUpRequest userSignUpRequest, HttpServletRequest request, HttpServletResponse response) throws MessagingException {
+        ApiResponse<UserLogInResponse> apiResponse = ApiResponse.<UserLogInResponse>builder()
+                .data(userService.signup(userSignUpRequest, request, response))
                 .message("Sign up successful")
                 .status(HttpStatus.CREATED.value())
                 .build();
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
     }
 
     @PostMapping("/login")
@@ -48,5 +52,16 @@ public class AuthController {
                 .status(HttpStatus.OK.value())
                 .build();
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PostMapping("verify-otp")
+    @Operation(summary = "Verify Otp", description = "API for verify otp from cookies")
+    public ResponseEntity<?> verifyOtp(@RequestBody Map<String, String> otpRequest, HttpServletRequest request, HttpServletResponse response) {
+        userService.verifyOtp(otpRequest, request, response);
+        ApiResponse<Void> apiResponse = ApiResponse.<Void>builder()
+                .message("Verify Otp successful")
+                .status(HttpStatus.OK.value())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 }
