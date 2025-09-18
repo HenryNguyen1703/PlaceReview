@@ -3,7 +3,7 @@ package vn.ngochieu.com.payload.request;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import vn.ngochieu.com.entity.Reviews;
+import vn.ngochieu.com.features.review.entity.Reviews;
 
 @Getter
 @Setter

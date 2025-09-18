@@ -23,5 +23,6 @@ public class CreateLocationRequest {
 
     String description;
 
-    String type;
+    @NotBlank
+    String categoryCode;
 }

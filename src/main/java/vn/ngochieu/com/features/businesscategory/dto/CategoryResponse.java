@@ -1,20 +1,18 @@
-package vn.ngochieu.com.payload.response;
+package vn.ngochieu.com.features.businesscategory.dto;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class LocationResponse {
-    Long id;
+public class CategoryResponse {
+    Long categoryId;
+    String code;
     String name;
-    String address;
-    String phone;
     String description;
-    String categoryName;
-    String categoryCode;
-    UserResponse user;
 }

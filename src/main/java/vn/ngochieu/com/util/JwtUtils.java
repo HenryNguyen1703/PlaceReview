@@ -6,7 +6,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.userdetails.UserDetails;
-import vn.ngochieu.com.entity.Users;
+import vn.ngochieu.com.features.user_management.entity.Users;
 
 import javax.crypto.SecretKey;
 import java.util.Date;

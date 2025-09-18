@@ -1,0 +1,88 @@
+package vn.ngochieu.com.features.review.controller;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import vn.ngochieu.com.payload.request.CreateReviewRequest;
+import vn.ngochieu.com.payload.request.UpdateReviewRequest;
+import vn.ngochieu.com.common.payloads.request.ApiResponse;
+import vn.ngochieu.com.payload.response.CreateReviewResponse;
+import vn.ngochieu.com.features.review.service.ReviewService;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/reviews")
+@RequiredArgsConstructor
+@Validated
+@Tag(name = "Review APIs", description = "APIs for review")
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@CrossOrigin(origins = "*")
+public class ReviewController {
+
+    ReviewService reviewService;
+
+    @PostMapping
+    @Operation(summary = "Create a new review", description = "API for role CUSTOMER to create a new review")
+    public ResponseEntity<?> createReview(@RequestBody @Valid CreateReviewRequest createReviewRequest, HttpServletRequest requestHttp) {
+        ApiResponse<CreateReviewResponse> response = ApiResponse.<CreateReviewResponse>builder()
+                .data(reviewService.createReview(createReviewRequest, requestHttp))
+                .message("Create review successful")
+                .status(HttpStatus.CREATED.value())
+                .build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping
+    @Operation(summary = "View all reviews(PENDING, APPROVED, REJECTED)", description = "API for role ADMIN to check reviews")
+    public ResponseEntity<?> listAllReviews(){
+        ApiResponse<List<CreateReviewResponse>> response = ApiResponse.<List<CreateReviewResponse>>builder()
+                .data(reviewService.listReview())
+                .message("All reviews successful")
+                .status(HttpStatus.OK.value())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Update status review(PENDING, APPROVED, REJECTED)", description = "API for role ADMIN to update status reviews")
+    public ResponseEntity<?> updateReviewStatus(@PathVariable Long id,@RequestBody @Valid UpdateReviewRequest updateReviewRequest, HttpServletRequest requestHttp) {
+        reviewService.reviewModeration(id, updateReviewRequest, requestHttp);
+        ApiResponse<Void> response = ApiResponse.<Void>builder()
+                .message("Update review successful")
+                .status(HttpStatus.OK.value())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/{locationId}")
+    @Operation(summary = "List approved reviews by location id", description = "API for all users to see approved reviews")
+    public ResponseEntity<?> listApprovedReviewsByLocationId(@PathVariable Long locationId) {
+        ApiResponse<List<CreateReviewResponse>> response = ApiResponse.<List<CreateReviewResponse>>builder()
+                .data(reviewService.listLocationApprovedByLocationId(locationId))
+                .message("List approved reviews successful")
+                .status(HttpStatus.OK.value())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/average/{locationId}")
+    @Operation(summary = "Calculate average review ratings by location id", description = "API for all users to average review ratings by location id")
+    public ResponseEntity<?> averageReviewRatingsByLocationId(@PathVariable Long locationId) {
+        ApiResponse<Double> response = ApiResponse.<Double>builder()
+                .data(reviewService.averageRatingByLocationId(locationId))
+                .message("average review ratings successful")
+                .status(HttpStatus.OK.value())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+}

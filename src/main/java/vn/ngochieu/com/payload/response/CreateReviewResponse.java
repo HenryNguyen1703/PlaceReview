@@ -2,9 +2,7 @@ package vn.ngochieu.com.payload.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import vn.ngochieu.com.entity.Locations;
-import vn.ngochieu.com.entity.Reviews;
-import vn.ngochieu.com.entity.Users;
+import vn.ngochieu.com.features.review.entity.Reviews;
 
 @Getter
 @Setter
