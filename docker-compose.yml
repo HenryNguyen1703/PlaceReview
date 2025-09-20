@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    image: placereview/app:1.0
+    container_name: placereview
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysqldb
+    networks:
+      - placereview_network
+  mysqldb:
+    platform: linux/x86_64
+    image: "mysql:oraclelinux9"
+    restart: always
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: placereview
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - placereview_network
+volumes:
+  mysql_data:
+networks:
+  placereview_network:
+    driver: bridge
+
