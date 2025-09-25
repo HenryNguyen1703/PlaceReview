@@ -1,4 +1,4 @@
-package vn.ngochieu.com.user_management.service.impl;
+package vn.ngochieu.com.features.user_management.service.impl;
 
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.Cookie;
@@ -17,16 +17,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import vn.ngochieu.com.entity.Users;
-import vn.ngochieu.com.exception.LogicCustomException;
+
+import vn.ngochieu.com.common.exceptions.LogicCustomException;
+import vn.ngochieu.com.features.user_management.entity.Users;
+import vn.ngochieu.com.features.user_management.mapper.UserMapper;
+import vn.ngochieu.com.features.user_management.payload.request.UserLogInRequest;
+import vn.ngochieu.com.features.user_management.payload.request.UserSignUpRequest;
+import vn.ngochieu.com.features.user_management.payload.response.UserLogInResponse;
+import vn.ngochieu.com.features.user_management.repository.UserRepository;
+import vn.ngochieu.com.features.user_management.service.UserService;
 import vn.ngochieu.com.service.EmailService;
 import vn.ngochieu.com.service.OtpService;
-import vn.ngochieu.com.user_management.mapper.UserMapper;
-import vn.ngochieu.com.user_management.payload.request.UserLogInRequest;
-import vn.ngochieu.com.user_management.payload.request.UserSignUpRequest;
-import vn.ngochieu.com.user_management.payload.response.UserLogInResponse;
-import vn.ngochieu.com.user_management.repository.UserRepository;
-import vn.ngochieu.com.user_management.service.UserService;
+
 import vn.ngochieu.com.util.JwtUtils;
 import vn.ngochieu.com.util.OtpUtils;
 
@@ -91,6 +93,8 @@ public class UserServiceImpl implements UserService {
         return userLogInResponse;
     }
 
+
+
     @Override
     public UserLogInResponse login(UserLogInRequest userLogInRequest, HttpServletRequest request) {
         Optional<Users> checker = userRepository.findByEmail(userLogInRequest.getEmail());
@@ -114,6 +118,8 @@ public class UserServiceImpl implements UserService {
         userLogInResponse.setToken(JwtUtils.createToken(checker.get(), request));
         return userLogInResponse;
     }
+
+
 
     @Override
     public void verifyOtp(Map<String, String> userOtp, HttpServletRequest request, HttpServletResponse response) {
