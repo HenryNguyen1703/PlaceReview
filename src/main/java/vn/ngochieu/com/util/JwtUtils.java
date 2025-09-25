@@ -26,6 +26,7 @@ public class JwtUtils {
                 .expiration(expirationDate)
                 .signWith(getKey())
                 .claim("role", user.getRole().name())
+                .claim("status", user.getStatus().name())
                 .claim("userAgent", request.getHeader("User-Agent"))
                 .compact();
     }
@@ -38,7 +39,8 @@ public class JwtUtils {
     //Validate token
     public static Boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        final String status = extractStatus(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token) && status.equals("ACTIVE"));
     }
 
     private static Boolean isTokenExpired(String token) {
@@ -59,6 +61,12 @@ public class JwtUtils {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
+
+    // extract status
+    public static String extractStatus(String token) {
+        return extractClaim(token, claims -> claims.get("status", String.class));
+    }
+
 
     //username is email
     public static String extractUsername(String token){

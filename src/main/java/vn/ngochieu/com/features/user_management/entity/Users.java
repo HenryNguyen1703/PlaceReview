@@ -29,7 +29,15 @@ public class Users {
     @Enumerated(EnumType.STRING)
     Role role;
 
+    @Column(name = "STATUS", nullable = false)
+    @Enumerated(EnumType.STRING)
+    Status status;
+
+    public enum Status {
+        PENDING, ACTIVE, LOCKED
+    }
+
     public enum Role{
-        ADMIN, CUSTOMER, BUSINESS
+        CUSTOMER, BUSINESS, ADMIN
     }
 }

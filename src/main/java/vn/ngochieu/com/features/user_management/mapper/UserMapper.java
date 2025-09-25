@@ -9,6 +9,8 @@ import vn.ngochieu.com.features.user_management.payload.request.UserSignUpReques
 public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "password", ignore = true)
+    @Mapping(target = "status", constant = "PENDING")
     Users toEntity(UserSignUpRequest userSignUpRequest);
 
 }
